@@ -49,12 +49,13 @@ class TaskListViewController: UITableViewController {
     }
     
     private func fetchData() {
-        let fetchRequest = Task.fetchRequest()
-        
-        do {
-            taskList = try viewContext.fetch(fetchRequest)
-        } catch let error {
-            print(error.localizedDescription)
+        StorageManager.shared.fetchData { result in
+            switch result {
+            case .success(let taskList):
+                self.taskList = taskList
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
     }
     
@@ -74,22 +75,12 @@ class TaskListViewController: UITableViewController {
     }
     
     private func save(_ taskName: String) {
-        let task = Task(context: viewContext)
-        task.title = taskName
-        taskList.append(task)
-        
-        let cellIndex = IndexPath(row: taskList.count - 1, section: 0)
-        tableView.insertRows(at: [cellIndex], with: .automatic)
-        
-        if viewContext.hasChanges {
-            do {
-                try viewContext.save()
-            } catch let error {
-                print(error.localizedDescription)
-            }
+        StorageManager.shared.save(taskName) { task in
+            taskList.append(task)
+            tableView.insertRows(
+                at: [IndexPath(row: taskList.count - 1, section: 0)],
+                with: .automatic)
         }
-        
-        
     }
 }
 
