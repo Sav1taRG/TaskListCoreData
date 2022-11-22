@@ -5,7 +5,6 @@
 //  Created by Roman Golubinko on 21.11.2022.
 //
 
-import Foundation
 import CoreData
 
 class StorageManager {
@@ -24,6 +23,8 @@ class StorageManager {
     
     lazy var viewContext = persistentContainer.viewContext
     
+    private init() {}
+    
     // MARK: - Core Data Saving support
     func saveContext() {
         let context = persistentContainer.viewContext
@@ -38,11 +39,11 @@ class StorageManager {
     }
     
     func save(_ taskName: String, completion: (Task) -> Void) {
-            let task = Task(context: viewContext)
-            task.title = taskName
-            completion(task)
-            saveContext()
-        }
+        let task = Task(context: viewContext)
+        task.title = taskName
+        completion(task)
+        saveContext()
+    }
     
     func edit(_ task: Task, newName: String) {
         task.title = newName
@@ -64,6 +65,4 @@ class StorageManager {
             completion(.failure(error))
         }
     }
-    
-    private init() {}
 }

@@ -13,6 +13,7 @@ class TaskListViewController: UITableViewController {
     private let cellID = "task"
     private var taskList: [Task] = []
     
+    // MARK: View Controller Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -43,6 +44,7 @@ class TaskListViewController: UITableViewController {
         navigationController?.navigationBar.tintColor = .white
     }
     
+    // MARK: Private Methods
     @objc private func addNewTask() {
         showAlert(
             withTitle: "New Task",
